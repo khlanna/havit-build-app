@@ -49,3 +49,4 @@ export function PostsError({ error }: PostsErrorProps) {
     </Card>
   );
 }
+

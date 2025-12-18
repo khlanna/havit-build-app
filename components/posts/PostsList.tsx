@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { fetchPosts } from "@/lib/api";
 import { Post } from "@/types";
-import { PostsError } from "@/components/posts-error";
+import { PostsError } from "@/components/posts/PostsError";
 
 interface PostsListProps {
   limit?: number;
@@ -68,3 +68,4 @@ export async function PostsList({ limit = 5 }: PostsListProps) {
     </section>
   );
 }
+
