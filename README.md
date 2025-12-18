@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Havit Build App - Technical Assessment
 
-## Getting Started
+A modern web application built with Next.js, TypeScript, and shadcn/ui for the Havit Build technical assessment.
 
-First, run the development server:
+## Project Overview
+
+This application consists of two main pages:
+
+1. **Main Page (Home)**: Features a hero section and displays a list of posts fetched from the JSONPlaceholder API
+2. **Form Page**: A contact form with validation that submits data to the JSONPlaceholder API
+
+## API Used
+
+This project uses the [JSONPlaceholder](https://jsonplaceholder.typicode.com) API:
+
+- **Base URL**: `https://jsonplaceholder.typicode.com`
+- **Endpoints Used**:
+  - `GET /posts` - Fetch posts for the home page
+  - `POST /posts` - Submit form data
+
+## Technologies Used
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Form Handling**: React Hook Form
+- **Validation**: Zod
+- **Package Manager**: npm
+
+## Project Structure
+
+```
+havit-build-app/
+├── app/
+│   ├── form/
+│   │   └── page.tsx          # Form page
+│   ├── layout.tsx            # Root layout with navigation
+│   └── page.tsx              # Home page
+├── components/
+│   ├── navigation.tsx        # Navigation component
+│   └── ui/                   # shadcn/ui components
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── input.tsx
+│       └── textarea.tsx
+├── lib/
+│   ├── api.ts                # API utility functions
+│   └── utils.ts              # Utility functions
+└── types/
+    └── index.ts              # TypeScript type definitions
+```
+
+## How to Run the Project Locally
+
+### Prerequisites
+
+- Node.js 18+ installed
+- npm (comes with Node.js)
+
+### Installation Steps
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd havit-build-app
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open your browser and navigate to:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Available Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Home Page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- ✅ Hero section with headline and description
+- ✅ Button/link navigating to Form Page
+- ✅ Fetches and displays 5 posts from API
+- ✅ Handles loading and error states
+- ✅ Responsive grid layout using shadcn/ui Card components
+- ✅ Server-side rendering (SSR) for initial data load
 
-## Deploy on Vercel
+### Form Page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- ✅ Full Name field with validation
+- ✅ Email Address field with email validation
+- ✅ Message textarea with validation
+- ✅ Form validation using Zod schema
+- ✅ React Hook Form for form state management
+- ✅ Client-side POST request to API
+- ✅ Success/error message display
+- ✅ Form data logged to console
+- ✅ No page refresh on submission
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Future Enhancements
+
+- Pagination or "Load More" functionality for posts (structure ready)
+- Additional form validation rules
+- More reusable components
+- Enhanced error handling and UI feedback
+
+## Notes
+
+- No backend or database is required (uses JSONPlaceholder API)
+- All form submissions are logged to the browser console
+- The application follows Next.js App Router conventions
+- TypeScript is used throughout for type safety
