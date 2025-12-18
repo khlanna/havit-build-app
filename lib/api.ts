@@ -5,13 +5,17 @@ const API_BASE_URL = "https://jsonplaceholder.typicode.com";
 
 /**
  * Fetch posts from JSONPlaceholder API
+ * @param start - Starting index for pagination (default: 0)
  * @param limit - Number of posts to fetch (default: 5)
  */
-export async function fetchPosts(limit: number = 5): Promise<Post[]> {
-  const response = await fetch(`${API_BASE_URL}/posts?_limit=${limit}`, {
-    // SSG: Cache at build time for static generation
-    cache: "force-cache",
-  });
+export async function fetchPosts(start = 0, limit = 5): Promise<Post[]> {
+  const response = await fetch(
+    `${API_BASE_URL}/posts?_start=${start}&_limit=${limit}`,
+    {
+      // SSG: Cache at build time for static generation
+      cache: "force-cache",
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch posts");
