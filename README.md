@@ -127,6 +127,7 @@ http://localhost:3000
 - ✅ Message textarea with validation
 - ✅ Form validation using Zod schema
 - ✅ React Hook Form for form state management
+  - **Note:** Form state is managed with React Hook Form instead of individual `useState` hooks per input field. This provides better performance through uncontrolled components, built-in validation integration, and reduces unnecessary re-renders.
 - ✅ Client-side POST request to API
 - ✅ Success and error feedback
 - ✅ Form data logged to the browser console

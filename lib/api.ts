@@ -25,16 +25,19 @@ export async function fetchPosts(limit: number = 5): Promise<Post[]> {
  */
 export async function submitForm(data: FormData): Promise<Post> {
   try {
+    // Map form data to JSONPlaceholder API format
+    const payload = {
+      title: data.fullName,
+      body: `Email: ${data.email}\n\n${data.message}`,
+      userId: 1, // Required by API
+    };
+
     const response = await fetch(`${API_BASE_URL}/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        title: data.fullName,
-        body: data.message,
-        userId: 1, // Required by API
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
