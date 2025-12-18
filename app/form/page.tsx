@@ -69,9 +69,29 @@ export default function FormPage() {
       reset();
     } catch (error) {
       console.error("Form submission error:", error);
+
+      // Provide more specific error messages
+      let errorMessage = "Failed to submit form. Please try again.";
+
+      if (error instanceof Error) {
+        if (
+          error.message.includes("Failed to fetch") ||
+          error.message.includes("ERR_NAME_NOT_RESOLVED") ||
+          error.message.includes("NetworkError")
+        ) {
+          errorMessage =
+            "Network error: Unable to connect to the server. Please check your internet connection.";
+        } else if (error.message.includes("Failed to submit form")) {
+          errorMessage =
+            "Server error: The form could not be submitted. Please try again later.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
       setSubmitStatus({
         type: "error",
-        message: "Failed to submit form. Please try again.",
+        message: errorMessage,
       });
     } finally {
       setIsSubmitting(false);

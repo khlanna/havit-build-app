@@ -24,21 +24,31 @@ export async function fetchPosts(limit: number = 5): Promise<Post[]> {
  * @param data - Form data to submit
  */
 export async function submitForm(data: FormData): Promise<Post> {
-  const response = await fetch(`${API_BASE_URL}/posts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      title: data.fullName,
-      body: data.message,
-      userId: 1, // Required by API
-    }),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: data.fullName,
+        body: data.message,
+        userId: 1, // Required by API
+      }),
+    });
 
-  if (!response.ok) {
-    throw new Error("Failed to submit form");
+    if (!response.ok) {
+      throw new Error(
+        `Failed to submit form: ${response.status} ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    // Re-throw network errors with more context
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      throw new Error("Network error: Unable to connect to the server");
+    }
+    throw error;
   }
-
-  return response.json();
 }
