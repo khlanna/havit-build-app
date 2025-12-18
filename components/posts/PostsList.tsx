@@ -68,4 +68,3 @@ export async function PostsList({ limit = 5 }: PostsListProps) {
     </section>
   );
 }
-
