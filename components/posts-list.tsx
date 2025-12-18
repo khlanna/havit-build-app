@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { fetchPosts } from "@/lib/api";
 import { Post } from "@/types";
+import { PostsError } from "@/components/posts-error";
 
 interface PostsListProps {
   limit?: number;
@@ -14,24 +15,19 @@ interface PostsListProps {
 
 export async function PostsList({ limit = 5 }: PostsListProps) {
   let posts: Post[] = [];
-  let error: string | null = null;
+  let error: unknown = null;
 
   try {
     // Fetch posts from API (SSG - Static Site Generation)
     posts = await fetchPosts(limit);
   } catch (err) {
-    error = err instanceof Error ? err.message : "Failed to fetch posts";
+    error = err;
   }
 
   if (error) {
     return (
       <section className="container mx-auto px-4 py-12">
-        <div className="rounded-lg border border-destructive bg-destructive/10 p-6 text-center">
-          <h2 className="text-xl font-semibold text-destructive mb-2">
-            Error Loading Posts
-          </h2>
-          <p className="text-sm text-muted-foreground">{error}</p>
-        </div>
+        <PostsError error={error} />
       </section>
     );
   }
