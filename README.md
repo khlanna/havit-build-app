@@ -22,7 +22,7 @@ This project uses the free mock API [JSONPlaceholder](https://jsonplaceholder.ty
 
 - **Base URL**: `https://jsonplaceholder.typicode.com`
 - **Endpoints Used**:
-  - `GET /posts` – Fetch posts for the home page
+  - `GET /posts?_start={start}&_limit={limit}` – Fetch posts with pagination
   - `POST /posts` – Submit form data
 
 ---
@@ -43,12 +43,26 @@ This project uses the free mock API [JSONPlaceholder](https://jsonplaceholder.ty
 ```
 havit-build-app/
 ├── app/
+│   ├── error.tsx             # Route-level error boundary
 │   ├── form/
 │   │   └── page.tsx          # Form page
 │   ├── layout.tsx            # Root layout with navigation
+│   ├── loading.tsx           # Route-level loading state
 │   └── page.tsx              # Home page
 ├── components/
-│   ├── navigation.tsx        # Navigation component
+│   ├── form/
+│   │   ├── FormField.tsx     # Reusable form field component
+│   │   ├── SubmitStatus.tsx  # Form submission status component
+│   │   └── useContactForm.ts # Custom hook for form logic
+│   ├── posts/
+│   │   ├── HeroSection.tsx   # Hero section component
+│   │   ├── LoadMorePosts.tsx # Load more posts component
+│   │   ├── PostCard.tsx      # Reusable post card component
+│   │   ├── PostsError.tsx    # Posts error component
+│   │   ├── PostsList.tsx     # Posts list server component
+│   │   ├── PostsLoading.tsx  # Posts loading component
+│   │   └── useLoadMorePosts.ts # Custom hook for load more logic
+│   ├── Navigation.tsx        # Navigation component
 │   └── ui/                   # shadcn/ui components
 │       ├── button.tsx
 │       ├── card.tsx
@@ -56,7 +70,9 @@ havit-build-app/
 │       └── textarea.tsx
 ├── lib/
 │   ├── api.ts                # API utility functions
-│   └── utils.ts              # Utility functions
+│   ├── utils.ts              # Utility functions
+│   └── validation/
+│       └── formSchema.ts     # Zod validation schema
 └── types/
     └── index.ts              # TypeScript type definitions
 ```
@@ -114,11 +130,15 @@ http://localhost:3000
 
 - ✅ Hero section with headline and description
 - ✅ Navigation button to Form page
-- ✅ Fetches and displays 5 posts from API
+- ✅ Fetches and displays initial 5 posts from API (server-rendered)
+- ✅ **Load More** functionality to fetch additional posts client-side
 - ✅ Loading and error states handled
-- ✅ Inline error UI without blocking the page
-- ✅ Responsive layout using shadcn/ui Card components
-- ✅ **Server-side data fetching with caching (ISR-style)** for initial load
+- ✅ Route-level error boundary (`error.tsx`) for unexpected crashes
+- ✅ Route-level loading state (`loading.tsx`)
+- ✅ Inline error UI (`PostsError`) for partial failures without blocking the page
+- ✅ Single column layout (one post per line)
+- ✅ **Server-side data fetching with caching (SSG)** for initial load
+- ✅ React Suspense for async data loading
 
 ### Form Page
 
@@ -148,10 +168,10 @@ This was intentionally omitted here to reflect the actual behavior of the API an
 
 ## Future Enhancements
 
-- Pagination or “Load More” functionality for posts
 - Additional form validation rules
 - More reusable components
 - Enhanced error handling and UI feedback
+- Grid layout option for posts display
 
 ---
 

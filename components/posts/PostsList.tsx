@@ -1,13 +1,8 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { fetchPosts } from "@/lib/api";
 import { Post } from "@/types";
 import { PostsError } from "@/components/posts/PostsError";
+import { PostCard } from "@/components/posts/PostCard";
+import { LoadMorePosts } from "@/components/posts/LoadMorePosts";
 
 interface PostsListProps {
   limit?: number;
@@ -18,8 +13,8 @@ export async function PostsList({ limit = 5 }: PostsListProps) {
   let error: unknown = null;
 
   try {
-    // Fetch posts from API (SSG - Static Site Generation)
-    posts = await fetchPosts(limit);
+    // Fetch initial posts from API (SSG - Static Site Generation)
+    posts = await fetchPosts(0, limit);
   } catch (err) {
     error = err;
   }
@@ -50,21 +45,16 @@ export async function PostsList({ limit = 5 }: PostsListProps) {
           Here are some posts fetched from the JSONPlaceholder API.
         </p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+      {/* Initial posts rendered on the server */}
+      <div className="flex flex-col gap-6">
         {posts.map((post) => (
-          <Card key={post.id}>
-            <CardHeader>
-              <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-              <CardDescription>Post ID: {post.id}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {post.body}
-              </p>
-            </CardContent>
-          </Card>
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
+
+      {/* Client-side append */}
+      <LoadMorePosts initialOffset={limit} pageSize={limit} />
     </section>
   );
 }
