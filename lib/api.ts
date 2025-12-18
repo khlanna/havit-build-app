@@ -1,4 +1,5 @@
-import { Post, FormData } from "@/types";
+import { Post } from "@/types";
+import { type FormData } from "@/lib/validation/formSchema";
 
 const API_BASE_URL = "https://jsonplaceholder.typicode.com";
 

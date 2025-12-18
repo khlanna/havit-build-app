@@ -15,9 +15,3 @@ export interface User {
   phone: string;
   website: string;
 }
-
-export interface FormData {
-  fullName: string;
-  email: string;
-  message: string;
-}
