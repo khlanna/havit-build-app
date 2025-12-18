@@ -1,48 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Post } from "@/types";
 import { PostCard } from "@/components/posts/PostCard";
-
-const API_BASE_URL = "https://jsonplaceholder.typicode.com";
+import { useLoadMorePosts } from "@/components/posts/useLoadMorePosts";
 
 type Props = {
-  initialOffset: number; // e.g. 5
-  pageSize: number; // e.g. 5
+  initialOffset: number;
+  pageSize: number;
 };
 
 export function LoadMorePosts({ initialOffset, pageSize }: Props) {
-  const [offset, setOffset] = useState(initialOffset);
-  const [extraPosts, setExtraPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-
-  const loadMore = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(
-        `${API_BASE_URL}/posts?_start=${offset}&_limit=${pageSize}`
-      );
-
-      if (!res.ok) throw new Error("Failed to load more posts");
-
-      const next: Post[] = await res.json();
-
-      setExtraPosts((prev) => [...prev, ...next]);
-      setOffset((prev) => prev + pageSize);
-
-      // If API returned fewer than pageSize => no more pages
-      setHasMore(next.length === pageSize);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load more posts");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { extraPosts, isLoading, error, hasMore, loadMore } = useLoadMorePosts(
+    initialOffset,
+    pageSize
+  );
 
   return (
     <div className="mt-8">
