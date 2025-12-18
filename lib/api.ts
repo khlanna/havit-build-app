@@ -1,4 +1,5 @@
-import { Post, FormData } from "@/types";
+import { Post } from "@/types";
+import { type FormData } from "@/lib/validation/formSchema";
 
 const API_BASE_URL = "https://jsonplaceholder.typicode.com";
 
@@ -24,21 +25,34 @@ export async function fetchPosts(limit: number = 5): Promise<Post[]> {
  * @param data - Form data to submit
  */
 export async function submitForm(data: FormData): Promise<Post> {
-  const response = await fetch(`${API_BASE_URL}/posts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  try {
+    // Map form data to JSONPlaceholder API format
+    const payload = {
       title: data.fullName,
-      body: data.message,
+      body: `Email: ${data.email}\n\n${data.message}`,
       userId: 1, // Required by API
-    }),
-  });
+    };
 
-  if (!response.ok) {
-    throw new Error("Failed to submit form");
+    const response = await fetch(`${API_BASE_URL}/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to submit form: ${response.status} ${response.statusText}`
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    // Re-throw network errors with more context
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      throw new Error("Network error: Unable to connect to the server");
+    }
+    throw error;
   }
-
-  return response.json();
 }
